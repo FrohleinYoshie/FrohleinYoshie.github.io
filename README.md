@@ -1,1 +1,0 @@
-# FrohleinYoshie.github.io
