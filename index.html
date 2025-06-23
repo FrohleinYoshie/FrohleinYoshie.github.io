@@ -3,441 +3,596 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SadoRide 事業計画</title>
+    <title>SadoRide 事業計画プレゼンテーション</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: "Sado Blue & Earth" -->
-    <!-- Application Structure Plan: このSPAは、従来のピッチ資料の構成をそのまま追うのではなく、投資家や関係者が事業のポテンシャルを直感的に理解できるよう、物語性のあるユーザーフローを設計しました。
-    1. **ヒーローセクション**: まず事業のビジョンを提示し、ユーザーの関心を引きます。
-    2. **「佐渡の課題」**: カード形式で具体的な課題を提示し、なぜこの事業が必要なのかを明確に伝えます。インタラクティブな要素でユーザーの共感を促します。
-    3. **「私たちの解決策」**: 事業の核心であるSadoRideの機能を、Before/Afterの比較やUIモックアップ風のビジュアルを用いて具体的に示します。これにより、ソリューションの価値が直感的に理解できます。
-    4. **「事業機会」**: 競合比較チャートやターゲット市場のグラフを用いて、市場における優位性と可能性をデータで裏付けます。
-    5. **「成長戦略」**: ビジネスモデルとロードマップを視覚的に提示し、事業の持続可能性と将来の展望を具体的に示します。
-    この構造は、まず問題提起で共感を得て、次に具体的な解決策で納得させ、最後にデータと将来性で期待感を高めるという、投資判断を促すための最適な情報アーキテクチャです。 -->
-    <!-- Visualization & Content Choices: 
-    * **佐渡の課題**: (Goal: Inform/Compare) -> HTML/CSSカード -> ホバーエフェクト -> 課題を個別に強調し、視覚的に分かりやすくするため。
-    * **送迎バスの最適化**: (Goal: Compare/Organize) -> HTML/CSS Before/After図 -> トグルボタン -> サービス導入前後の変化を劇的に見せ、ソリューションのインパクトを直感的に理解させるため。
-    * **競合優位性**: (Goal: Compare) -> HTMLテーブル -> JSによるインタラクティブなハイライト -> 競合との差別化ポイントを明確に比較検討できるようにするため。
-    * **ターゲット市場**: (Goal: Inform/Proportion) -> Chart.js ドーナツチャート -> ホバーで詳細表示 -> ターゲット層の構成比を視覚的に示し、市場の具体像を伝えるため。
-    * **資金使途**: (Goal: Inform/Proportion) -> Chart.js 横棒グラフ -> ホバーで詳細表示 -> 資金の使途を明確かつ透明性高く示すため。
-    * **ロードマップ**: (Goal: Change/Organize) -> HTML/CSSタイムライン -> クリックで詳細表示 -> 事業の段階的な成長計画を時系列で分かりやすく見せるため。 -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+        body { 
+            font-family: 'Inter', 'Noto Sans JP', sans-serif; 
+            overflow: hidden;
+        }
         .bg-warm-gray { background-color: #F5F5F4; }
         .bg-sado-blue { background-color: #1E3A8A; }
         .text-sado-blue { color: #1E3A8A; }
         .border-sado-blue { border-color: #1E3A8A; }
         .accent-sado-blue { background-color: #3B82F6; }
         .text-accent-sado-blue { color: #3B82F6; }
-        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
-        @media (max-width: 768px) { .chart-container { height: 300px; } }
-        .timeline-item::before { content: ''; position: absolute; left: 11px; top: 12px; bottom: 0; width: 2px; background: #DBEAFE; }
-        .timeline-item:last-child::before { display: none; }
-        .timeline-dot { position: absolute; left: 0; top: 12px; width: 24px; height: 24px; }
-        .active-nav { color: #3B82F6; font-weight: 700; }
-        .inactive-nav { color: #4B5563; }
-        .bus-line { position: absolute; left: 10%; width: 80%; height: 4px; background-color: #E5E7EB; border-radius: 2px; top: 50%; transform: translateY(-50%); }
-        .bus-stop { position: absolute; width: 12px; height: 12px; background-color: #9CA3AF; border-radius: 50%; top: 50%; transform: translate(-50%, -50%); }
-        .bus-icon { position: absolute; top: 50%; transform: translateY(-50%); font-size: 1.5rem; transition: left 1.5s ease-in-out; }
+        
+        .slide {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .slide.active {
+            transform: translateX(0);
+        }
+        
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+        
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 0.5rem;
+            max-height: calc(100vh - 1rem);
+            overflow-y: auto;
+        }
+        
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 500px; 
+            margin: 0 auto; 
+            height: 250px;
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3B82F6, #1E3A8A);
+            transition: width 0.6s ease;
+            z-index: 1000;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 16px;
+            rounded: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1E3A8A;
+            z-index: 1000;
+            border-radius: 20px;
+        }
+        
+        .navigation-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .navigation-hint.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .bus-stop { 
+            position: absolute; 
+            width: 16px; 
+            height: 16px; 
+            background-color: #9CA3AF; 
+            border-radius: 50%; 
+            border: 2px solid white;
+            transform: translate(-50%, -50%); 
+        }
+        
+        .bus-icon { 
+            position: absolute; 
+            font-size: 1.75rem;
+            transform: translate(-50%, -50%);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .scale-in {
+            animation: scaleIn 0.6s ease-out;
+        }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes draw-line {
+            from { stroke-dashoffset: 120; }
+            to { stroke-dashoffset: 0; }
+        }
+        .sadoride-draw-line {
+            stroke-dasharray: 120;
+            animation: draw-line 1s ease-out forwards;
+        }
+        
+        .bus-tracking-path {
+            animation: move-bus-around 10s linear infinite;
+        }
+
+        @keyframes move-bus-around {
+            0%   { top: 10%; left: 10%; transform: translate(-50%, -50%) rotate(90deg); }
+            25%  { top: 10%; left: 90%; transform: translate(-50%, -50%) rotate(90deg); }
+            26%  { top: 10%; left: 90%; transform: translate(-50%, -50%) rotate(180deg); }
+            50%  { top: 90%; left: 90%; transform: translate(-50%, -50%) rotate(180deg); }
+            51%  { top: 90%; left: 90%; transform: translate(-50%, -50%) rotate(270deg); }
+            75%  { top: 90%; left: 10%; transform: translate(-50%, -50%) rotate(270deg); }
+            76%  { top: 90%; left: 10%; transform: translate(-50%, -50%) rotate(360deg); }
+            100% { top: 10%; left: 10%; transform: translate(-50%, -50%) rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-warm-gray text-gray-800">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-counter" id="slideCounter">1 / 6</div>
+    <div class="navigation-hint">矢印キー または スペースキー で次のスライドへ</div>
 
-    <header id="header" class="bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50">
-        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-xl font-bold text-sado-blue">SadoRide</span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#problem" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">課題</a>
-                        <a href="#solution" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">解決策</a>
-                        <a href="#market" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">事業機会</a>
-                        <a href="#business" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">成長戦略</a>
-                        <a href="#roadmap" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">ロードマップ</a>
+    <div class="slide active" data-slide="1">
+        <div class="slide-content bg-white justify-center items-center text-center">
+            <div class="fade-in">
+                <h1 class="text-6xl md:text-8xl font-black tracking-tight text-sado-blue mb-8">SadoRide</h1>
+                <h2 class="text-2xl md:text-4xl font-bold text-gray-700 mb-6">佐渡島の移動を、もっと自由に、快適に。</h2>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    佐渡島の交通課題を解決し、すべての人の旅を豊かにする<br>
+                    統合交通Webアプリの事業計画
+                </p>
+                <div class="mt-12">
+                    <div class="inline-block bg-accent-sado-blue text-white font-bold py-4 px-8 rounded-full text-xl">
+                        2025年6月 事業計画書
                     </div>
                 </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
-                        <span class="sr-only">メニューを開く</span>
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </nav>
-        <div id="mobile-menu" class="md:hidden hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#problem" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">課題</a>
-                <a href="#solution" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">解決策</a>
-                <a href="#market" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">事業機会</a>
-                <a href="#business" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">成長戦略</a>
-                <a href="#roadmap" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">ロードマップ</a>
             </div>
         </div>
-    </header>
+    </div>
 
-    <main class="pt-16">
-        <section class="relative text-center py-20 sm:py-32 bg-white">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-sado-blue">佐渡島の移動を、もっと自由に、快適に。</h1>
-                <p class="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-gray-600">SadoRideは、佐渡島の交通課題を解決し、すべての人の旅を豊かにする統合交通Webアプリです。</p>
-                <div class="mt-10">
-                    <a href="#problem" class="inline-block bg-accent-sado-blue text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-sado-blue transition duration-300">事業計画を見る</a>
+    <div class="slide" data-slide="2">
+        <div class="slide-content bg-warm-gray">
+            <div class="container mx-auto px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tight text-sado-blue mb-6">佐渡が直面する</h2>
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tight text-red-600">「移動の壁」</h2>
+                    <p class="mt-6 text-xl text-gray-600 max-w-4xl mx-auto">
+                        佐渡の豊かな魅力を存分に楽しむには、多くの旅行者が交通の課題に直面しています。
+                    </p>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-3 max-w-6xl mx-auto">
+                    <div class="bg-white p-8 rounded-2xl shadow-xl scale-in">
+                        <div class="text-center">
+                            <span class="text-6xl mb-4 block">🚗</span>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">自家用車の制約</h3>
+                            <p class="text-gray-600 text-lg leading-relaxed">
+                                免許がない、運転が不安、そして何より<strong>佐渡の美味しいお酒を楽しみたい</strong>。
+                                そんな旅行者にとって、車の運転は大きな障壁です。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-2xl shadow-xl scale-in" style="animation-delay: 0.2s;">
+                        <div class="text-center">
+                            <span class="text-6xl mb-4 block">🚌</span>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">公共交通の利便性</h3>
+                            <p class="text-gray-600 text-lg leading-relaxed">
+                                バスの本数が少なく、乗り換えも複雑。特に、主要観光地である<strong>佐渡金山以外の場所</strong>へのアクセスは限られています。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-2xl shadow-xl scale-in" style="animation-delay: 0.4s;">
+                        <div class="text-center">
+                            <span class="text-6xl mb-4 block">🍶</span>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">非効率な送迎システム</h3>
+                            <p class="text-gray-600 text-lg leading-relaxed">
+                                島内に<strong>5つある酒蔵</strong>や各観光施設が個別に送迎バスを運行。
+                                情報が分散し、利用者にとっても事業者にとっても非効率な状態です。
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <section id="problem" class="py-16 sm:py-24 bg-warm-gray">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">佐渡が直面する「移動の壁」</h2>
-                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">佐渡の豊かな魅力を存分に楽しむには、多くの旅行者が交通の課題に直面しています。これらの課題は、観光体験の質を低下させるだけでなく、地域経済への機会損失にも繋がっています。</p>
+    <div class="slide" data-slide="3">
+        <div class="slide-content bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight text-sado-blue mb-4">私たちの解決策</h2>
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight text-accent-sado-blue">SadoRide</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-4xl mx-auto">
+                        これらの交通課題を一つのプラットフォームで解決します。
+                    </p>
                 </div>
 
-                <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                        <div class="flex items-center">
-                            <span class="text-3xl">🚗</span>
-                            <h3 class="ml-4 text-xl font-semibold text-gray-900">自家用車の制約</h3>
-                        </div>
-                        <p class="mt-4 text-gray-600">免許がない、運転が不安、そして何より佐渡の美味しいお酒を楽しみたい。そんな旅行者にとって、車の運転は大きな障壁です。</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                        <div class="flex items-center">
-                             <span class="text-3xl">🚌</span>
-                            <h3 class="ml-4 text-xl font-semibold text-gray-900">公共交通の利便性</h3>
-                        </div>
-                        <p class="mt-4 text-gray-600">バスの本数が少なく、乗り換えも複雑。特に、主要観光地である佐渡金山以外の場所へのアクセスは限られています。</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                        <div class="flex items-center">
-                             <span class="text-3xl">🍶</span>
-                            <h3 class="ml-4 text-xl font-semibold text-gray-900">非効率な送迎システム</h3>
-                        </div>
-                        <p class="mt-4 text-gray-600">島内に5つある酒蔵や各観光施設が個別に送迎バスを運行。情報が分散し、利用者にとっても事業者にとっても非効率な状態です。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="solution" class="py-16 sm:py-24 bg-white">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">私たちの解決策：SadoRide</h2>
-                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">SadoRideは、これらの交通課題を一つのプラットフォームで解決します。予約、追跡、そして最適化を通じて、佐渡の移動をシームレスで快適な体験に変えます。</p>
-                </div>
-                <div class="mt-12 space-y-12">
-                    <div class="grid md:grid-cols-2 gap-8 items-center">
-                        <div>
-                            <h3 class="text-2xl font-semibold text-gray-900">1. 統合予約とリアルタイム追跡</h3>
-                            <p class="mt-4 text-gray-600">タクシー、バス、周遊バスの予約をアプリ一つで完結。さらに、バスの現在地をリアルタイムで地図上に表示することで、待ち時間の不安を解消し、旅行計画の精度を高めます。</p>
-                        </div>
-                        <div class="bg-gray-100 p-4 rounded-lg shadow-inner">
-                             <div class="relative h-48">
-                                <div class="bus-line"></div>
-                                <div class="bus-stop" style="left: 15%;"></div>
-                                <div class="bus-stop" style="left: 45%;"></div>
-                                <div class="bus-stop" style="left: 75%;"></div>
-                                <div id="bus-icon" class="bus-icon" style="left: 15%;">🚌</div>
-                             </div>
-                             <p class="text-center text-sm text-gray-500 mt-2">バスの現在地をリアルタイムで確認</p>
+                <div class="grid md:grid-cols-2 gap-8 items-stretch max-w-6xl mx-auto">
+                    <div class="flex flex-col fade-in">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">統合予約とリアルタイム追跡</h3>
+                        <p class="text-lg text-gray-600 leading-relaxed mb-4">
+                            タクシー、バス、周遊バスの予約を<strong>アプリ一つで完結</strong>。
+                            さらに、バスの現在地をリアルタイムで地図上に表示。
+                        </p>
+                        <div class="flex-grow bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6 rounded-2xl border border-slate-200 shadow-lg flex flex-col justify-center items-center">
+                           <div class="w-full max-w-[250px] aspect-square bg-white/50 rounded-2xl shadow-inner">
+                               <div class="relative w-full h-full border-4 border-slate-300 border-dashed rounded-2xl">
+                                   <div class="bus-stop" style="top: 10%; left: 10%;"></div>
+                                   <div class="bus-stop" style="top: 10%; left: 90%;"></div>
+                                   <div class="bus-stop" style="top: 90%; left: 10%;"></div>
+                                   <div class="bus-stop" style="top: 90%; left: 90%;"></div>
+                                   <div class="bus-icon bus-tracking-path" style="top: 10%; left: 10%;">🚌</div>
+                               </div>
+                           </div>
+                           <p class="text-center text-sm text-gray-600 font-semibold mt-4">バスの現在地をリアルタイムで確認</p>
                         </div>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-8 items-center">
-                        <div class="md:order-2">
-                             <h3 class="text-2xl font-semibold text-gray-900">2. 送迎バスの最適化</h3>
-                             <p class="mt-4 text-gray-600">点在する酒蔵や観光施設の送迎バス情報を一元管理。利用者はSadoRideから最適な送迎ルートを検索・予約できるようになり、事業者はバスの稼働率を向上させることができます。</p>
-                        </div>
-                        <div class="md:order-1">
-                            <div id="shuttle-diagram-container" class="border p-4 rounded-lg bg-gray-50">
-                                <div class="flex justify-center mb-4">
-                                    <button id="shuttle-before-btn" class="px-4 py-2 text-sm font-medium text-white bg-sado-blue rounded-l-md">Before</button>
-                                    <button id="shuttle-after-btn" class="px-4 py-2 text-sm font-medium text-sado-blue bg-white border border-sado-blue rounded-r-md">After</button>
+                    
+                    <div class="flex flex-col fade-in" style="animation-delay: 0.3s;">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">送迎バスの最適化</h3>
+                        <p class="text-lg text-gray-600 leading-relaxed mb-4">
+                            点在する酒蔵や観光施設の送迎バス情報を<strong>一元管理</strong>。
+                            利用者は最適な送迎ルートを検索・予約できます。
+                        </p>
+                        <div class="flex-grow bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6 rounded-2xl border border-slate-200 shadow-lg">
+                            <div class="grid grid-cols-2 gap-4 h-full">
+                                <div class="text-center flex flex-col">
+                                    <div class="flex items-center justify-center mb-2">
+                                        <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                                        <h4 class="text-base font-bold text-slate-800">Before：個別運行</h4>
+                                    </div>
+                                    <div class="flex-grow bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative">
+                                        <div class="absolute inset-0 opacity-20">
+                                            <div class="absolute top-4 left-4 right-4 h-0.5 bg-red-300 border-dashed"></div>
+                                            <div class="absolute bottom-4 left-4 right-4 h-0.5 bg-red-300 border-dashed"></div>
+                                            <div class="absolute top-4 bottom-4 left-4 w-0.5 bg-red-300 border-dashed"></div>
+                                            <div class="absolute top-4 bottom-4 right-4 w-0.5 bg-red-300 border-dashed"></div>
+                                        </div>
+                                        <div class="absolute top-2 left-2 bg-gradient-to-r from-blue-100 to-blue-200 p-1.5 rounded-md text-xs font-semibold text-blue-800 shadow-sm">🚢 港</div>
+                                        <div class="absolute top-2 right-2 bg-gradient-to-r from-purple-100 to-purple-200 p-1.5 rounded-md text-xs font-semibold text-purple-800 shadow-sm">🍶 酒蔵A</div>
+                                        <div class="absolute bottom-2 left-2 bg-gradient-to-r from-green-100 to-green-200 p-1.5 rounded-md text-xs font-semibold text-green-800 shadow-sm">🏨 X</div>
+                                        <div class="absolute bottom-2 right-2 bg-gradient-to-r from-purple-100 to-purple-200 p-1.5 rounded-md text-xs font-semibold text-purple-800 shadow-sm">🍶 酒蔵B</div>
+                                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-100 border-2 border-red-300 px-2 py-1 rounded-lg"><div class="text-red-600 text-xs font-bold flex items-center">⚠️ 個別</div></div>
+                                    </div>
+                                    <div class="mt-2 p-2 bg-red-50 rounded-lg border border-red-200">
+                                        <p class="text-xs text-red-700 font-medium">情報が分散・非効率</p>
+                                    </div>
                                 </div>
-                                <div id="shuttle-diagram" class="h-48 relative flex justify-around items-center">
+                                
+                                <div class="text-center flex flex-col">
+                                    <div class="flex items-center justify-center mb-2">
+                                        <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                                        <h4 class="text-base font-bold text-slate-800">After：SadoRide統合</h4>
+                                    </div>
+                                    <div class="flex-grow bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative">
+                                        <svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <circle cx="50%" cy="50%" r="30" fill="rgba(59, 130, 246, 0.1)"/>
+                                            <line x1="50%" y1="50%" x2="25%" y2="25%" stroke="#3B82F6" stroke-width="2" class="sadoride-draw-line" style="animation-delay: 0.5s;"/>
+                                            <line x1="50%" y1="50%" x2="75%" y2="25%" stroke="#3B82F6" stroke-width="2" class="sadoride-draw-line" style="animation-delay: 0.6s;"/>
+                                            <line x1="50%" y1="50%" x2="25%" y2="75%" stroke="#3B82F6" stroke-width="2" class="sadoride-draw-line" style="animation-delay: 0.7s;"/>
+                                            <line x1="50%" y1="50%" x2="75%" y2="75%" stroke="#3B82F6" stroke-width="2" class="sadoride-draw-line" style="animation-delay: 0.8s;"/>
+                                        </svg>
+                                        <div class="absolute top-2 left-2 bg-gradient-to-r from-blue-100 to-blue-200 p-1.5 rounded-md text-xs font-semibold text-blue-800 shadow-sm">🚢 港</div>
+                                        <div class="absolute top-2 right-2 bg-gradient-to-r from-purple-100 to-purple-200 p-1.5 rounded-md text-xs font-semibold text-purple-800 shadow-sm">🍶 酒蔵A</div>
+                                        <div class="absolute bottom-2 left-2 bg-gradient-to-r from-green-100 to-green-200 p-1.5 rounded-md text-xs font-semibold text-green-800 shadow-sm">🏨 X</div>
+                                        <div class="absolute bottom-2 right-2 bg-gradient-to-r from-purple-100 to-purple-200 p-1.5 rounded-md text-xs font-semibold text-purple-800 shadow-sm">🍶 酒蔵B</div>
+                                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-500 to-blue-700 text-white px-3 py-1.5 rounded-full shadow-lg z-10 scale-in" style="animation-delay: 0.4s;"><div class="text-sm font-bold">SadoRide</div></div>
+                                    </div>
+                                    <div class="mt-2 p-2 bg-blue-50 rounded-lg border border-blue-200">
+                                        <p class="text-xs text-blue-700 font-medium">効率的なルート最適化</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <section id="market" class="py-16 sm:py-24 bg-warm-gray">
-             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">広がる事業機会</h2>
-                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">SadoRideは、既存の移動手段が抱える課題を解決することで、新たな市場を創造します。明確なターゲット層と独自の強みで、佐渡の観光DXをリードします。</p>
+    <div class="slide" data-slide="4">
+        <div class="slide-content bg-warm-gray">
+            <div class="container mx-auto px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tight text-sado-blue mb-6">広がる</h2>
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tight text-green-600">事業機会</h2>
+                    <p class="mt-6 text-xl text-gray-600 max-w-4xl mx-auto">
+                        明確なターゲット層と独自の強みで、佐渡の観光DXをリードします。
+                    </p>
                 </div>
 
-                <div class="mt-12 grid lg:grid-cols-2 gap-12 items-start">
-                    <div>
-                        <h3 class="text-2xl font-semibold text-center text-gray-900 mb-6">競合優位性</h3>
-                        <div class="overflow-x-auto">
-                            <table id="competition-table" class="w-full min-w-max text-left bg-white shadow-lg rounded-lg">
+                <div class="grid lg:grid-cols-2 gap-8 items-start max-w-6xl mx-auto">
+                    <div class="fade-in">
+                        <h3 class="text-3xl font-bold text-center text-gray-900 mb-8">競合優位性</h3>
+                        <div class="overflow-hidden rounded-2xl shadow-xl">
+                            <table id="competition-table" class="w-full text-left bg-white">
                                 <thead class="bg-gray-100">
                                     <tr>
-                                        <th class="p-4 font-semibold">項目</th>
-                                        <th class="p-4 font-semibold">既存交通</th>
-                                        <th class="p-4 font-semibold">自家用車</th>
-                                        <th class="p-4 font-semibold text-white bg-sado-blue">SadoRide</th>
+                                        <th class="p-4 font-bold text-lg">項目</th>
+                                        <th class="p-4 font-bold text-lg">既存交通</th>
+                                        <th class="p-4 font-bold text-lg">自家用車</th>
+                                        <th class="p-4 font-bold text-lg text-white bg-sado-blue">SadoRide</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="text-lg">
                                     <tr class="border-t hover:bg-blue-50 transition-colors">
-                                        <td class="p-4 font-medium">予約</td>
+                                        <td class="p-4 font-semibold">予約</td>
                                         <td class="p-4">電話/対面</td>
                                         <td class="p-4">不要</td>
                                         <td class="p-4 font-bold text-accent-sado-blue">アプリで完結</td>
                                     </tr>
                                     <tr class="border-t hover:bg-blue-50 transition-colors">
-                                        <td class="p-4 font-medium">リアルタイム追跡</td>
+                                        <td class="p-4 font-semibold">リアルタイム追跡</td>
                                         <td class="p-4">不可</td>
                                         <td class="p-4">自己管理</td>
                                         <td class="p-4 font-bold text-accent-sado-blue">可能</td>
                                     </tr>
                                     <tr class="border-t hover:bg-blue-50 transition-colors">
-                                        <td class="p-4 font-medium">飲酒時の移動</td>
+                                        <td class="p-4 font-semibold">飲酒時の移動</td>
                                         <td class="p-4">限定的</td>
                                         <td class="p-4">不可</td>
                                         <td class="p-4 font-bold text-accent-sado-blue">多様な選択肢</td>
-                                    </tr>
-                                    <tr class="border-t hover:bg-blue-50 transition-colors">
-                                        <td class="p-4 font-medium">送迎バス最適化</td>
-                                        <td class="p-4">不可</td>
-                                        <td class="p-4">不可</td>
-                                        <td class="p-4 font-bold text-accent-sado-blue">一元管理</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                     <div>
-                        <h3 class="text-2xl font-semibold text-center text-gray-900 mb-6">主なターゲット市場</h3>
-                        <div class="chart-container bg-white p-4 rounded-lg shadow-lg">
+                    
+                    <div class="fade-in" style="animation-delay: 0.3s;">
+                        <h3 class="text-3xl font-bold text-center text-gray-900 mb-8">主なターゲット市場</h3>
+                        <div class="chart-container bg-white p-6 rounded-2xl shadow-xl">
                             <canvas id="targetMarketChart"></canvas>
                         </div>
                     </div>
                 </div>
-             </div>
-        </section>
-        
-        <section id="business" class="py-16 sm:py-24 bg-white">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">持続可能な成長戦略</h2>
-                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">SadoRideは多様な収益源を確保し、事業の安定性と成長性を両立させます。地域との連携を深め、佐渡の観光エコシステム全体に貢献します。</p>
-                </div>
-                <div class="mt-12">
-                    <h3 class="text-2xl font-semibold text-center text-gray-900 mb-6">ビジネスモデル</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-                        <div class="bg-gray-50 p-6 rounded-lg">
-                            <div class="text-4xl mb-3">🎟️</div>
-                            <h4 class="text-lg font-semibold">予約・提携手数料</h4>
-                            <p class="mt-2 text-sm text-gray-600">タクシー・バスの予約手数料や、観光施設との送迎バス提携料が主な収益源です。</p>
-                        </div>
-                        <div class="bg-gray-50 p-6 rounded-lg">
-                            <div class="text-4xl mb-3">📣</div>
-                            <h4 class="text-lg font-semibold">広告・プロモーション</h4>
-                            <p class="mt-2 text-sm text-gray-600">アプリ内で地域の店舗や施設の広告を掲載し、送客を支援します。</p>
-                        </div>
-                        <div class="bg-gray-50 p-6 rounded-lg">
-                            <div class="text-4xl mb-3">📊</div>
-                            <h4 class="text-lg font-semibold">データ分析サービス</h4>
-                            <p class="mt-2 text-sm text-gray-600">蓄積した移動データを分析し、佐渡市の観光戦略や交通計画立案に貢献します。</p>
-                        </div>
-                         <div class="bg-gray-50 p-6 rounded-lg">
-                            <div class="text-4xl mb-3">⭐</div>
-                            <h4 class="text-lg font-semibold">プレミアム機能</h4>
-                            <p class="mt-2 text-sm text-gray-600">事前予約優先権や特別コースなど、付加価値の高い機能を有料で提供します。</p>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </section>
-
-        <section id="roadmap" class="py-16 sm:py-24 bg-warm-gray">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">未来へのロードマップ</h2>
-                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">段階的な開発と機能拡張により、着実に事業を成長させ、佐渡の交通インフラとしての地位を確立します。</p>
-                </div>
-                <div class="mt-12 max-w-4xl mx-auto">
-                    <div id="funding-section" class="mb-12">
-                         <h3 class="text-2xl font-semibold text-center text-gray-900 mb-6">資金計画</h3>
-                         <p class="text-center text-gray-600 mb-2">初期開発と市場投入のため、<strong class="text-accent-sado-blue text-xl">X,XXX万円</strong>の資金調達を目指します。</p>
-                         <div class="chart-container bg-white p-4 rounded-lg shadow-lg" style="height: 300px;">
-                             <canvas id="fundingChart"></canvas>
-                         </div>
-                    </div>
-                    
-                    <div class="relative mt-12">
-                        <div id="roadmap-timeline" class="space-y-8">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-sado-blue text-white">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
-            <p class="font-bold text-xl">SadoRide</p>
-            <p class="mt-2 text-sm text-blue-200">佐渡島の未来の移動を、共に創造する。</p>
-            <p class="mt-4 text-xs text-blue-300">&copy; 2025 SadoRide Project. All Rights Reserved.</p>
         </div>
-    </footer>
+    </div>
+
+    <div class="slide" data-slide="5">
+        <div class="slide-content bg-white">
+            <div class="container mx-auto px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tight text-sado-blue mb-6">持続可能な</h2>
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tight text-purple-600">成長戦略</h2>
+                    <p class="mt-6 text-xl text-gray-600 max-w-4xl mx-auto">
+                        多様な収益源を確保し、事業の安定性と成長性を両立させます。
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-3xl font-bold text-center text-gray-900 mb-12">ビジネスモデル</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center max-w-6xl mx-auto">
+                        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl shadow-lg scale-in">
+                            <div class="text-5xl mb-4">🎟️</div>
+                            <h4 class="text-xl font-bold mb-4">予約・提携手数料</h4>
+                            <p class="text-gray-600 leading-relaxed">タクシー・バスの予約手数料や、観光施設との送迎バス提携料が主な収益源です。</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl shadow-lg scale-in" style="animation-delay: 0.2s;">
+                            <div class="text-5xl mb-4">📣</div>
+                            <h4 class="text-xl font-bold mb-4">広告・プロモーション</h4>
+                            <p class="text-gray-600 leading-relaxed">アプリ内で地域の店舗や施設の広告を掲載し、送客を支援します。</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl shadow-lg scale-in" style="animation-delay: 0.4s;">
+                            <div class="text-5xl mb-4">📊</div>
+                            <h4 class="text-xl font-bold mb-4">データ分析サービス</h4>
+                            <p class="text-gray-600 leading-relaxed">蓄積した移動データを分析し、佐Д市の観光戦略や交通計画立案に貢献します。</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-2xl shadow-lg scale-in" style="animation-delay: 0.6s;">
+                            <div class="text-5xl mb-4">⭐</div>
+                            <h4 class="text-xl font-bold mb-4">プレミアム機能</h4>
+                            <p class="text-gray-600 leading-relaxed">事前予約優先権や特別コースなど、付加価値の高い機能を有料で提供します。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="6">
+        <div class="slide-content bg-warm-gray justify-center">
+            <div class="container mx-auto px-4 py-4">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tight text-sado-blue mb-3">未来へのロードマップ</h2>
+                    <p class="text-base text-gray-600 max-w-4xl mx-auto">
+                        段階的な開発と機能拡張により、着実に事業を成長させます。
+                    </p>
+                </div>
+                
+                <div class="max-w-7xl mx-auto space-y-6">
+                    <div class="grid lg:grid-cols-5 gap-8 items-center">
+                        <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-xl fade-in">
+                            <h3 class="text-xl font-bold text-center text-gray-900 mb-2">資金計画</h3>
+                            <div class="relative" style="height: 220px;">
+                                <canvas id="fundingChart"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none transform -translate-y-8">
+                                    <span class="text-gray-500 text-sm">初期調達額</span>
+                                    <span class="text-2xl font-black text-sado-blue leading-tight">1,200<span class="text-lg ml-1">万円</span></span>
+                                </div>
+                                </div>
+                        </div>
+                        
+                        <div class="lg:col-span-3 bg-white p-6 rounded-2xl shadow-xl fade-in" style="animation-delay: 0.2s;">
+                             <h3 class="text-xl font-bold text-center text-gray-900 mb-2">月次キャッシュフロー予測 (36ヶ月)</h3>
+                             <div class="relative" style="height: 220px;">
+                                <canvas id="financialRoadmapChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fade-in" style="animation-delay: 0.4s;">
+                        <h3 class="text-xl font-bold text-center text-gray-900 mb-4">開発フェーズ</h3>
+                        <div class="relative w-full max-w-3xl mx-auto">
+                            <div class="absolute top-7 left-0 w-full h-1 bg-blue-200 rounded-full"></div>
+                            <div class="relative flex justify-between items-start">
+                                <div class="w-1/3 text-center">
+                                    <div class="relative bg-warm-gray inline-block">
+                                        <div class="w-14 h-14 rounded-full bg-sado-blue text-white flex items-center justify-center text-2xl mx-auto shadow-md border-4 border-blue-200">🚀</div>
+                                    </div>
+                                    <h4 class="font-bold text-base text-sado-blue mt-2 mb-1">フェーズ1</h4>
+                                    <p class="text-xs text-gray-600">初期開発・MVPリリース<br>(2026年春)</p>
+                                </div>
+                                <div class="w-1/3 text-center">
+                                    <div class="relative bg-warm-gray inline-block">
+                                        <div class="w-14 h-14 rounded-full bg-green-600 text-white flex items-center justify-center text-2xl mx-auto shadow-md border-4 border-blue-200">📈</div>
+                                    </div>
+                                    <h4 class="font-bold text-base text-green-700 mt-2 mb-1">フェーズ2</h4>
+                                    <p class="text-xs text-gray-600">機能拡張・本格運用<br>(2026年秋)</p>
+                                </div>
+                                <div class="w-1/3 text-center">
+                                    <div class="relative bg-warm-gray inline-block">
+                                        <div class="w-14 h-14 rounded-full bg-purple-600 text-white flex items-center justify-center text-2xl mx-auto shadow-md border-4 border-blue-200">🌍</div>
+                                    </div>
+                                    <h4 class="font-bold text-base text-purple-700 mt-2 mb-1">フェーズ3</h4>
+                                    <p class="text-xs text-gray-600">サービス拡大・地域貢献<br>(2027年以降)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+            let currentSlide = 1;
+            const totalSlides = 6;
+            const slides = document.querySelectorAll('.slide');
+            const progressBar = document.getElementById('progressBar');
+            const slideCounter = document.getElementById('slideCounter');
+            const navigationHint = document.querySelector('.navigation-hint');
 
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('main section');
-            const headerHeight = document.getElementById('header').offsetHeight;
+            // Hide navigation hint after 4 seconds
+            setTimeout(() => {
+                navigationHint.classList.add('hidden');
+            }, 4000);
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        navLinks.forEach(link => {
-                            link.classList.remove('active-nav');
-                            link.classList.add('inactive-nav');
-                            if (link.getAttribute('href') === `#${id}`) {
-                                link.classList.add('active-nav');
-                                link.classList.remove('inactive-nav');
-                            }
-                        });
+            function updateSlide() {
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('active', 'prev');
+                    if (index + 1 === currentSlide) {
+                        slide.classList.add('active');
+                    } else if (index + 1 < currentSlide) {
+                        slide.classList.add('prev');
                     }
                 });
-            }, { rootMargin: `-${headerHeight}px 0px 0px 0px` });
+                
+                progressBar.style.width = `${(currentSlide / totalSlides) * 100}%`;
+                slideCounter.textContent = `${currentSlide} / ${totalSlides}`;
+                
+                // Trigger animations for the current slide
+                const activeSlide = document.querySelector('.slide.active');
+                const animations = activeSlide.querySelectorAll('.fade-in, .scale-in, .sadoride-draw-line, .bus-tracking-path');
+                animations.forEach(el => {
+                    // Reset animation by re-applying the class or style
+                    const animationName = el.style.animationName;
+                    const animationClass = el.className;
+                    el.style.animation = 'none';
+                    void el.offsetWidth; // Trigger reflow to restart animation
+                    el.style.animation = null;
 
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    if (mobileMenu.classList.contains('hidden') === false) {
-                        mobileMenu.classList.add('hidden');
+                    // Re-apply class-based animations
+                    if (animationClass.includes('fade-in') || animationClass.includes('scale-in') || animationClass.includes('sadoride-draw-line') || animationClass.includes('bus-tracking-path')) {
+                         // The browser will re-apply styles from the stylesheet
                     }
                 });
-            });
+            }
 
-            const busIcon = document.getElementById('bus-icon');
-            setInterval(() => {
-                busIcon.style.left = busIcon.style.left === '15%' ? '75%' : '15%';
-            }, 3000);
-
-            const shuttleDiagramContainer = document.getElementById('shuttle-diagram');
-            const beforeBtn = document.getElementById('shuttle-before-btn');
-            const afterBtn = document.getElementById('shuttle-after-btn');
-            const shuttleData = {
-                before: [
-                    { from: '酒蔵A', to: '港' },
-                    { from: '酒蔵B', to: 'ホテルX' },
-                    { from: '施設C', to: '港' },
-                ],
-                after: [
-                    { from: 'SadoRide', to: '酒蔵A' },
-                    { from: 'SadoRide', to: '酒蔵B' },
-                    { from: 'SadoRide', to: '施設C' },
-                    { from: 'SadoRide', to: '港' },
-                    { from: 'SadoRide', to: 'ホテルX' },
-                ]
-            };
-            
-            function createShuttleDiagram(state) {
-                shuttleDiagramContainer.innerHTML = '';
-                const isAfter = state === 'after';
-                const centerNode = document.createElement('div');
-                centerNode.className = `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 rounded-full ${isAfter ? 'bg-sado-blue text-white' : 'hidden'}`;
-                centerNode.innerHTML = '<span>SadoRide</span>';
-                shuttleDiagramContainer.appendChild(centerNode);
-
-                const points = isAfter ? ['酒蔵A', '酒蔵B', '施設C', '港', 'ホテルX'] : ['酒蔵A', '酒蔵B', '施設C', '港', 'ホテルX'];
-                points.forEach((p, i) => {
-                    const angle = (i / points.length) * 2 * Math.PI;
-                    const x = 50 + 40 * Math.cos(angle);
-                    const y = 50 + 40 * Math.sin(angle);
-                    
-                    const pointNode = document.createElement('div');
-                    pointNode.className = 'absolute p-1 text-xs bg-white border rounded-full text-center';
-                    pointNode.style.left = `${x}%`;
-                    pointNode.style.top = `${y}%`;
-                    pointNode.style.transform = 'translate(-50%, -50%)';
-                    pointNode.textContent = p;
-                    shuttleDiagramContainer.appendChild(pointNode);
-                    
-                    if (isAfter) {
-                        const line = document.createElement('div');
-                        line.className = 'absolute bg-blue-200';
-                        line.style.left = '50%';
-                        line.style.top = '50%';
-                        line.style.width = '40%';
-                        line.style.height = '2px';
-                        line.style.transformOrigin = '0 0';
-                        line.style.transform = `rotate(${angle * 180 / Math.PI}deg)`;
-                        shuttleDiagramContainer.insertBefore(line, centerNode);
-                    }
-                });
-
-                if(!isAfter) {
-                    const connections = [[0,3], [1,4], [2,3]];
-                    connections.forEach(conn => {
-                        const p1 = shuttleDiagramContainer.children[conn[0]+1];
-                        const p2 = shuttleDiagramContainer.children[conn[1]+1];
-                        const line = document.createElement('div');
-                        const p1x = parseFloat(p1.style.left);
-                        const p1y = parseFloat(p1.style.top);
-                        const p2x = parseFloat(p2.style.left);
-                        const p2y = parseFloat(p2.style.top);
-                        const angle = Math.atan2(p2y - p1y, p2x - p1x) * 180 / Math.PI;
-                        const length = Math.sqrt(Math.pow(p2x-p1x, 2) + Math.pow(p2y-p1y, 2));
-
-                        line.className = 'absolute bg-gray-300';
-                        line.style.left = `${p1x}%`;
-                        line.style.top = `${p1y}%`;
-                        line.style.width = `${length}%`;
-                        line.style.height = '2px';
-                        line.style.transformOrigin = '0 0';
-                        line.style.transform = `rotate(${angle}deg)`;
-                        shuttleDiagramContainer.insertBefore(line, shuttleDiagramContainer.firstChild);
-                    });
+            function nextSlide() {
+                if (currentSlide < totalSlides) {
+                    currentSlide++;
+                    updateSlide();
                 }
             }
 
-            beforeBtn.addEventListener('click', () => {
-                createShuttleDiagram('before');
-                beforeBtn.classList.add('bg-sado-blue', 'text-white');
-                beforeBtn.classList.remove('bg-white', 'text-sado-blue', 'border', 'border-sado-blue');
-                afterBtn.classList.add('bg-white', 'text-sado-blue', 'border', 'border-sado-blue');
-                afterBtn.classList.remove('bg-sado-blue', 'text-white');
+            function prevSlide() {
+                if (currentSlide > 1) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'ArrowRight':
+                    case ' ':
+                        e.preventDefault();
+                        nextSlide();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        prevSlide();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        currentSlide = 1;
+                        updateSlide();
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        currentSlide = totalSlides;
+                        updateSlide();
+                        break;
+                }
             });
-            afterBtn.addEventListener('click', () => {
-                createShuttleDiagram('after');
-                afterBtn.classList.add('bg-sado-blue', 'text-white');
-                afterBtn.classList.remove('bg-white', 'text-sado-blue', 'border', 'border-sado-blue');
-                beforeBtn.classList.add('bg-white', 'text-sado-blue', 'border', 'border-sado-blue');
-                beforeBtn.classList.remove('bg-sado-blue', 'text-white');
+
+            // Touch/swipe navigation
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
             });
 
-            createShuttleDiagram('before');
+            document.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) {
+                    nextSlide();
+                } else if (touchEndX - touchStartX > 50) {
+                    prevSlide();
+                }
+            });
 
-
+            // Charts
             const targetMarketCtx = document.getElementById('targetMarketChart').getContext('2d');
             new Chart(targetMarketCtx, {
                 type: 'doughnut',
@@ -457,6 +612,11 @@
                     plugins: {
                         legend: {
                             position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
                         },
                         title: {
                             display: false
@@ -467,85 +627,98 @@
 
             const fundingCtx = document.getElementById('fundingChart').getContext('2d');
             new Chart(fundingCtx, {
-                type: 'bar',
+                type: 'doughnut',
                 data: {
                     labels: ['アプリ開発費', 'マーケティング費', '運用・保守費', '人員拡充・その他'],
                     datasets: [{
-                        label: '資金使途 (%)',
-                        data: [45, 25, 15, 15],
-                        backgroundColor: '#3B82F6',
-                        borderRadius: 4
+                        label: '資金使途 (万円)',
+                        data: [540, 300, 180, 180],
+                        backgroundColor: ['#1E3A8A', '#2563EB', '#60A5FA', '#93C5FD'],
+                        borderColor: '#fff',
+                        borderWidth: 5
                     }]
                 },
                 options: {
-                    indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
+                    cutout: '75%',
                     plugins: {
-                        legend: { display: false },
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 12 },
+                                padding: 15
+                            }
+                        },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return `${context.label}: ${context.raw}%`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            max: 50,
-                             ticks: {
-                                callback: function(value) {
-                                    return value + '%';
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('ja-JP').format(context.parsed) + '万円';
+                                    }
+                                    return label;
                                 }
                             }
                         }
                     }
                 }
             });
-            
-            const roadmapData = [
-                {
-                    phase: 'フェーズ1',
-                    title: '初期開発・MVPリリース (2026年春)',
-                    details: 'タクシー予約機能、主要バス路線のGPS追跡機能を実装。主要な交通事業者との連携を開始。',
-                    icon: '🚀'
-                },
-                {
-                    phase: 'フェーズ2',
-                    title: '機能拡張・本格運用 (2026年秋)',
-                    details: '全バス路線の追跡、送迎バス一元管理機能の実装。多言語対応も開始し、インバウンド需要に対応。',
-                    icon: '📈'
-                },
-                {
-                    phase: 'フェーズ3',
-                    title: 'サービス拡大・地域貢献 (2027年以降)',
-                    details: 'AIによる最適ルート提案、地域イベントとの連携強化。蓄積データを活用し、佐渡の観光DXを牽引。',
-                    icon: '🌍'
-                }
-            ];
 
-            const timelineContainer = document.getElementById('roadmap-timeline');
-            roadmapData.forEach((item, index) => {
-                const itemEl = document.createElement('div');
-                itemEl.className = 'timeline-item relative pl-12 pb-8';
-                
-                itemEl.innerHTML = `
-                    <div class="timeline-dot bg-blue-200 text-sado-blue rounded-full flex items-center justify-center font-bold ring-8 ring-warm-gray">${item.icon}</div>
-                    <div class="bg-white p-4 rounded-lg shadow-md cursor-pointer roadmap-item">
-                        <h4 class="font-bold text-lg text-sado-blue">${item.phase}: ${item.title}</h4>
-                        <p class="roadmap-details hidden mt-2 text-gray-600">${item.details}</p>
-                    </div>
-                `;
-                timelineContainer.appendChild(itemEl);
-            });
+            // 月次キャッシュフロー予測データ (36ヶ月)
+            const parsedMonthlySalesYen = [526900, 546975, 567520, 588550, 610078, 632121, 654692, 677809, 701487, 725744, 750596, 776062, 802160, 828909, 856328, 884438, 913259, 942813, 973121, 1004207, 1036093, 1068804, 1102364, 1136799, 1172135, 1208399, 1245619, 1283824, 1323042, 1363305, 1404645, 1447092, 1490681, 1535445, 1581421, 1628643];
+            const parsedMonthlyVariableCostYen = [10538, 10940, 11350, 11771, 12202, 12642, 13094, 13556, 14030, 14515, 15012, 15521, 16043, 16578, 17127, 17689, 18265, 18856, 19462, 20084, 20722, 21376, 22047, 22736, 23443, 24168, 24912, 25676, 26461, 27266, 28093, 28942, 29814, 30709, 31628, 32573];
+            const parsedMonthlyFixedCostYen = [1138757, 1139359, 1139976, 1140606, 1141252, 1141914, 1142591, 1143284, 1143995, 1144722, 1145468, 1146232, 1147015, 1147817, 1148640, 1149483, 1150348, 1151234, 1152144, 1153076, 1154033, 1155014, 1156021, 1157054, 1158114, 1159202, 1160319, 1161465, 1162641, 1163849, 1165089, 1166363, 1167670, 1169013, 1170393, 1171809];
+            const initialFundingYen = 12000000;
+            const monthlyLabels = Array.from({length: 36}, (_, i) => `${i + 1}ヶ月`);
             
-            document.querySelectorAll('.roadmap-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    item.querySelector('.roadmap-details').classList.toggle('hidden');
-                });
+            // 万円単位に変換
+            const monthlySales = parsedMonthlySalesYen.map(v => v / 10000);
+            const monthlyTotalCost = parsedMonthlyVariableCostYen.map((v, i) => (v + parsedMonthlyFixedCostYen[i]) / 10000);
+            const monthlyProfit = monthlySales.map((s, i) => s - monthlyTotalCost[i]);
+
+            let cumulativeCashFlow = [];
+            let currentCumulative = initialFundingYen / 10000;
+            for (let i = 0; i < monthlyProfit.length; i++) {
+                currentCumulative += monthlyProfit[i];
+                cumulativeCashFlow.push(currentCumulative);
+            }
+
+            const financialRoadmapCtx = document.getElementById('financialRoadmapChart').getContext('2d');
+            new Chart(financialRoadmapCtx, {
+                type: 'line',
+                data: {
+                    labels: monthlyLabels,
+                    datasets: [
+                        { label: '月次売上高', data: monthlySales, borderColor: '#2563EB', backgroundColor: 'rgba(37, 99, 235, 0.2)', fill: true, tension: 0.3, pointRadius: 1, pointHoverRadius: 5 },
+                        { label: '月次総費用', data: monthlyTotalCost, borderColor: '#DC2626', backgroundColor: 'rgba(220, 38, 38, 0.2)', fill: true, tension: 0.3, pointRadius: 1, pointHoverRadius: 5 },
+                        { label: '累積キャッシュフロー', data: cumulativeCashFlow, borderColor: '#16A34A', backgroundColor: 'rgba(22, 163, 74, 0.2)', fill: true, tension: 0.3, pointRadius: 1, pointHoverRadius: 5 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 12 }, padding: 10 } },
+                        tooltip: { callbacks: { label: context => `${context.dataset.label}: ${context.raw.toFixed(1)}万円` } }
+                    },
+                    scales: {
+                        x: {
+                             ticks: { font: { size: 10 }, maxTicksLimit: 8 },
+                             grid: { display: false }
+                        },
+                        y: { 
+                            ticks: { font: { size: 10 }, callback: value => `${value.toFixed(0)}` },
+                            title: { display: true, text: '(万円)', font: { size: 10 } }
+                        }
+                    }
+                }
             });
+            // Initialize
+            updateSlide();
         });
     </script>
 </body>
