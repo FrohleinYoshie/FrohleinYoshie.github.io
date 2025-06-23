@@ -1,653 +1,551 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>木原 優月 - 自己プレゼンテーション</title>
+    <title>SadoRide 事業計画</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Sado Blue & Earth" -->
+    <!-- Application Structure Plan: このSPAは、従来のピッチ資料の構成をそのまま追うのではなく、投資家や関係者が事業のポテンシャルを直感的に理解できるよう、物語性のあるユーザーフローを設計しました。
+    1. **ヒーローセクション**: まず事業のビジョンを提示し、ユーザーの関心を引きます。
+    2. **「佐渡の課題」**: カード形式で具体的な課題を提示し、なぜこの事業が必要なのかを明確に伝えます。インタラクティブな要素でユーザーの共感を促します。
+    3. **「私たちの解決策」**: 事業の核心であるSadoRideの機能を、Before/Afterの比較やUIモックアップ風のビジュアルを用いて具体的に示します。これにより、ソリューションの価値が直感的に理解できます。
+    4. **「事業機会」**: 競合比較チャートやターゲット市場のグラフを用いて、市場における優位性と可能性をデータで裏付けます。
+    5. **「成長戦略」**: ビジネスモデルとロードマップを視覚的に提示し、事業の持続可能性と将来の展望を具体的に示します。
+    この構造は、まず問題提起で共感を得て、次に具体的な解決策で納得させ、最後にデータと将来性で期待感を高めるという、投資判断を促すための最適な情報アーキテクチャです。 -->
+    <!-- Visualization & Content Choices: 
+    * **佐渡の課題**: (Goal: Inform/Compare) -> HTML/CSSカード -> ホバーエフェクト -> 課題を個別に強調し、視覚的に分かりやすくするため。
+    * **送迎バスの最適化**: (Goal: Compare/Organize) -> HTML/CSS Before/After図 -> トグルボタン -> サービス導入前後の変化を劇的に見せ、ソリューションのインパクトを直感的に理解させるため。
+    * **競合優位性**: (Goal: Compare) -> HTMLテーブル -> JSによるインタラクティブなハイライト -> 競合との差別化ポイントを明確に比較検討できるようにするため。
+    * **ターゲット市場**: (Goal: Inform/Proportion) -> Chart.js ドーナツチャート -> ホバーで詳細表示 -> ターゲット層の構成比を視覚的に示し、市場の具体像を伝えるため。
+    * **資金使途**: (Goal: Inform/Proportion) -> Chart.js 横棒グラフ -> ホバーで詳細表示 -> 資金の使途を明確かつ透明性高く示すため。
+    * **ロードマップ**: (Goal: Change/Organize) -> HTML/CSSタイムライン -> クリックで詳細表示 -> 事業の段階的な成長計画を時系列で分かりやすく見せるため。 -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f8fbff;
-            color: #333;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-        
-        .slides-container {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-        
-        .slide {
-            width: 100%;
-            height: 100vh;
-            box-sizing: border-box;
-            padding: 40px;
-            position: relative;
-            scroll-snap-align: start;
-            overflow: hidden;
-        }
-        
-        .slide-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .slide-title {
-            color: #2196F3;
-            margin-top: 0;
-            margin-bottom: 30px;
-            font-size: 36px;
-            border-bottom: 2px solid #2196F3;
-            padding-bottom: 10px;
-        }
-        
-        .title-slide {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: linear-gradient(135deg, #42a5f5, #1976D2);
-            color: white;
-        }
-        
-        .title-slide h1 {
-            font-size: 60px;
-            margin-bottom: 30px;
-        }
-        
-        .title-slide h2 {
-            font-size: 36px;
-            font-weight: normal;
-            margin-bottom: 60px;
-        }
-        
-        .title-slide h3 {
-            font-size: 24px;
-            font-weight: normal;
-            margin: 5px 0;
-        }
-        
-        .two-column {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            flex-grow: 1;
-        }
-        
-        .column {
-            width: 48%;
-        }
-        
-        .skill-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 30px;
-            flex-grow: 1;
-        }
-        
-        .skill-card {
-            background-color: #e3f2fd;
-            border-left: 4px solid #2196F3;
-            padding: 20px;
-            flex: 1 0 28%;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(33,150,243,0.1);
-        }
-        
-        .skill-card h3 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            color: #2196F3;
-            font-size: 22px;
-        }
-        
-        .skill-card ul {
-            margin: 0;
-            padding-left: 20px;
-            font-size: 18px;
-        }
-        
-        .skill-card li {
-            margin-bottom: 8px;
-        }
-        
-        .project-card {
-            background-color: #f8fbff;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(33,150,243,0.1);
-            flex-grow: 1;
-            border: 1px solid #e3f2fd;
-        }
-        
-        .project-card h3 {
-            margin-top: 0;
-            color: #2196F3;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        
-        .project-image {
-            width: 100%;
-            height: 240px;
-            background-color: #e1e1e1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 10px 0;
-            border-radius: 4px;
-            font-size: 18px;
-        }
-        
-        .experience-card {
-            background-color: #e3f2fd;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(33,150,243,0.1);
-        }
-        
-        .experience-card h3 {
-            margin-top: 0;
-            color: #2196F3;
-            font-size: 24px;
-        }
-        
-        .experience-card p {
-            font-size: 18px;
-            margin: 8px 0;
-        }
-        
-        .experience-card ul {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-        
-        .experience-card li {
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-        
-        .bullet-points {
-            margin-top: 25px;
-            font-size: 18px;
-        }
-        
-        .bullet-points li {
-            margin-bottom: 15px;
-            position: relative;
-            padding-left: 25px;
-            list-style-type: none;
-        }
-        
-        .bullet-points li:before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 8px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #2196F3;
-        }
-        
-        .thank-you {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: linear-gradient(135deg, #1976D2, #42a5f5);
-            color: white;
-        }
-        
-        .thank-you h1 {
-            font-size: 60px;
-            margin-bottom: 40px;
-        }
-        
-        .thank-you p {
-            font-size: 28px;
-            margin: 5px 0;
-        }
-
-        .pr-point {
-            display: flex;
-            margin-bottom: 20px;
-            align-items: flex-start;
-        }
-
-        .pr-number {
-            background-color: #2196F3;
-            color: white;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            margin-right: 18px;
-            flex-shrink: 0;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .pr-content {
-            flex-grow: 1;
-        }
-        
-        .pr-content p {
-            margin: 5px 0;
-            font-size: 18px;
-        }
-        
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-        }
-        
-        .nav-button {
-            background-color: rgba(33, 150, 243, 0.8);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .nav-button:hover {
-            background-color: rgba(33, 150, 243, 1);
-        }
-        
-        .slide-indicator {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: rgba(255,255,255,0.7);
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 14px;
-            color: #333;
-            z-index: 100;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .projects-container {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-        
-        .single-project-container {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            justify-content: center;
-        }
-        
-        .vision-section {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-        
-        .vision-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-        }
-        
-        .experiences-container {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            justify-content: space-between;
-        }
-        
-        .pr-container {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-        
-        .pr-points {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-        }
-        
-        .company-container {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            justify-content: space-between;
-        }
-        
-        .contact-section {
-            text-align: center;
-            margin-top: auto;
-            padding-top: 40px;
-        }
-        
-        .contact-section h3 {
-            font-size: 22px;
-        }
-        
-        .large-text {
-            font-size: 18px;
-        }
+        body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+        .bg-warm-gray { background-color: #F5F5F4; }
+        .bg-sado-blue { background-color: #1E3A8A; }
+        .text-sado-blue { color: #1E3A8A; }
+        .border-sado-blue { border-color: #1E3A8A; }
+        .accent-sado-blue { background-color: #3B82F6; }
+        .text-accent-sado-blue { color: #3B82F6; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (max-width: 768px) { .chart-container { height: 300px; } }
+        .timeline-item::before { content: ''; position: absolute; left: 11px; top: 12px; bottom: 0; width: 2px; background: #DBEAFE; }
+        .timeline-item:last-child::before { display: none; }
+        .timeline-dot { position: absolute; left: 0; top: 12px; width: 24px; height: 24px; }
+        .active-nav { color: #3B82F6; font-weight: 700; }
+        .inactive-nav { color: #4B5563; }
+        .bus-line { position: absolute; left: 10%; width: 80%; height: 4px; background-color: #E5E7EB; border-radius: 2px; top: 50%; transform: translateY(-50%); }
+        .bus-stop { position: absolute; width: 12px; height: 12px; background-color: #9CA3AF; border-radius: 50%; top: 50%; transform: translate(-50%, -50%); }
+        .bus-icon { position: absolute; top: 50%; transform: translateY(-50%); font-size: 1.5rem; transition: left 1.5s ease-in-out; }
     </style>
 </head>
-<body>
-    <div class="slides-container">
+<body class="bg-warm-gray text-gray-800">
 
-        <div class="slide title-slide" id="slide1">
-            <div class="slide-content">
-                <h1>自己プレゼンテーション</h1>
-                <h2>木原 優月(きはら ゆづき)</h2>
-                <h3>開志専門職大学 情報学部 情報学科</h3>
-                <h3>2026年卒業予定</h3>
-            </div>
-        </div>
-
-        <div class="slide" id="slide2">
-            <div class="slide-content">
-                <h2 class="slide-title">自己紹介</h2>
-                <div class="two-column" style="align-items: flex-start; margin-top: 10px;">
-                    <div class="column" style="width: 65%;">
-                        <div style="margin-bottom: 25px;">
-                            <p style="font-size: 22px; margin: 5px 0;"><strong>名前：</strong>木原 優月(きはら ゆづき)</p>
-                            <p style="font-size: 22px; margin: 5px 0;"><strong>出身地：</strong>新潟県</p>
-                            <p style="font-size: 22px; margin: 5px 0;"><strong>趣味：</strong>水泳・アニメ</p>
-                        </div>
-                        
-                        <h3 style="margin-top: 20px; font-size: 24px; color: #2196F3;">経験</h3>
-                    </div>
-                    <div class="column" style="width: 30%;">
-                        <div style="width: 100%; height: 200px; background-color: #e1e1e1; border-radius: 8px; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                            <img src="image copy 2.png" alt="プロフィール画像" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" />
-                        </div>
+    <header id="header" class="bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-sado-blue">SadoRide</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#problem" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">課題</a>
+                        <a href="#solution" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">解決策</a>
+                        <a href="#market" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">事業機会</a>
+                        <a href="#business" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">成長戦略</a>
+                        <a href="#roadmap" class="nav-link inactive-nav hover:text-accent-sado-blue px-3 py-2 rounded-md text-sm font-medium">ロードマップ</a>
                     </div>
                 </div>
-                <div class="pr-points" style="margin-top: 10px;">
-                        <div class="pr-point">
-                            <div class="pr-number">1</div>
-                            <div class="pr-content">
-                                <p><strong>Qiita毎月投稿</strong></p>
-                                <p>技術知識の整理と共有を目的に継続的な情報発信</p>
-                                <p>自身の学習内容を体系化し、技術コミュニティへ貢献</p>
-                            </div>
-                        </div>
-                        <div class="pr-point">
-                            <div class="pr-number">2</div>
-                            <div class="pr-content">
-                                <p><strong>ハッカソン5回参加</strong></p>
-                                <p>モバイルアプリ、3Dゲーム、IoT、デスクトップアプリ、Webアプリなど様々な分野での開発を経験</p>
-                                <p>短期間での問題解決能力と多様な技術への適応力を養成</p>
-                            </div>
-                        </div>
-                        <div class="pr-point">
-                            <div class="pr-number">3</div>
-                            <div class="pr-content">
-                                <p><strong>生徒会組織の会計を担当</strong></p>
-                                <p>予算管理と収支報告の責任者として組織運営に貢献</p>
-                                <p>正確性とチームワークを重視した業務遂行の経験</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <span class="sr-only">メニューを開く</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
                 </div>
             </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#problem" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">課題</a>
+                <a href="#solution" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">解決策</a>
+                <a href="#market" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">事業機会</a>
+                <a href="#business" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">成長戦略</a>
+                <a href="#roadmap" class="block nav-link inactive-nav hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">ロードマップ</a>
+            </div>
         </div>
+    </header>
 
-        <div class="slide" id="slide3">
-            <div class="slide-content">
-                <h2 class="slide-title">技術スキル</h2>
-                <div class="skill-container">
-                    <div class="skill-card">
-                        <h3>フロントエンド</h3>
-                        <ul>
-                            <li>React</li>
-                            <li>Next.js</li>
-                            <li>TypeScript</li>
-                        </ul>
+    <main class="pt-16">
+        <section class="relative text-center py-20 sm:py-32 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-sado-blue">佐渡島の移動を、もっと自由に、快適に。</h1>
+                <p class="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-gray-600">SadoRideは、佐渡島の交通課題を解決し、すべての人の旅を豊かにする統合交通Webアプリです。</p>
+                <div class="mt-10">
+                    <a href="#problem" class="inline-block bg-accent-sado-blue text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-sado-blue transition duration-300">事業計画を見る</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="problem" class="py-16 sm:py-24 bg-warm-gray">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">佐渡が直面する「移動の壁」</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">佐渡の豊かな魅力を存分に楽しむには、多くの旅行者が交通の課題に直面しています。これらの課題は、観光体験の質を低下させるだけでなく、地域経済への機会損失にも繋がっています。</p>
+                </div>
+
+                <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center">
+                            <span class="text-3xl">🚗</span>
+                            <h3 class="ml-4 text-xl font-semibold text-gray-900">自家用車の制約</h3>
+                        </div>
+                        <p class="mt-4 text-gray-600">免許がない、運転が不安、そして何より佐渡の美味しいお酒を楽しみたい。そんな旅行者にとって、車の運転は大きな障壁です。</p>
                     </div>
-                    <div class="skill-card">
-                        <h3>バックエンド</h3>
-                        <ul>
-                            <li>Python</li>
-                            <li>Go</li>
-                            <li>SupaBase</li>
-                        </ul>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center">
+                             <span class="text-3xl">🚌</span>
+                            <h3 class="ml-4 text-xl font-semibold text-gray-900">公共交通の利便性</h3>
+                        </div>
+                        <p class="mt-4 text-gray-600">バスの本数が少なく、乗り換えも複雑。特に、主要観光地である佐渡金山以外の場所へのアクセスは限られています。</p>
                     </div>
-                    <div class="skill-card">
-                        <h3>その他</h3>
-                        <ul>
-                            <li>Unity（ゲーム開発）</li>
-                            <li>AWS（クラウドインフラ）</li>
-                        </ul>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center">
+                             <span class="text-3xl">🍶</span>
+                            <h3 class="ml-4 text-xl font-semibold text-gray-900">非効率な送迎システム</h3>
+                        </div>
+                        <p class="mt-4 text-gray-600">島内に5つある酒蔵や各観光施設が個別に送迎バスを運行。情報が分散し、利用者にとっても事業者にとっても非効率な状態です。</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="slide" id="slide4">
-            <div class="slide-content">
-                <h2 class="slide-title">プロジェクト経験①</h2>
-                <div class="single-project-container">
-                    <div class="project-card">
-                        <h3>アイスマ</h3>
-                        <div class="two-column" style="align-items: center;">
-                            <div class="column" style="width: 40%;">
-                                <p class="large-text"><strong>概要：</strong>会話・スケジュール管理機能を持つアプリケーション</p>
-                                <p class="large-text"><strong>使用技術：</strong>Electron、TypeScript、Python、Supabase、DifyAPI</p>
-                                <p class="large-text"><strong>担当：</strong>フロントエンド開発</p>
-                                <p class="large-text"><strong>成果：</strong>金額や得意技術を考慮した技術選定方法の習得</p>
-                                <p class="large-text"><strong>期間：</strong>2ヶ月</p>
-                            </div>
-                            <div class="column" style="width: 58%;">
-                                <div class="project-image" style="height: 320px; margin: 0;">
-                                    <img src="image.png" alt="アイスマキャラクター" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" />
-                                    
+        <section id="solution" class="py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">私たちの解決策：SadoRide</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">SadoRideは、これらの交通課題を一つのプラットフォームで解決します。予約、追跡、そして最適化を通じて、佐渡の移動をシームレスで快適な体験に変えます。</p>
+                </div>
+                <div class="mt-12 space-y-12">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-900">1. 統合予約とリアルタイム追跡</h3>
+                            <p class="mt-4 text-gray-600">タクシー、バス、周遊バスの予約をアプリ一つで完結。さらに、バスの現在地をリアルタイムで地図上に表示することで、待ち時間の不安を解消し、旅行計画の精度を高めます。</p>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg shadow-inner">
+                             <div class="relative h-48">
+                                <div class="bus-line"></div>
+                                <div class="bus-stop" style="left: 15%;"></div>
+                                <div class="bus-stop" style="left: 45%;"></div>
+                                <div class="bus-stop" style="left: 75%;"></div>
+                                <div id="bus-icon" class="bus-icon" style="left: 15%;">🚌</div>
+                             </div>
+                             <p class="text-center text-sm text-gray-500 mt-2">バスの現在地をリアルタイムで確認</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="md:order-2">
+                             <h3 class="text-2xl font-semibold text-gray-900">2. 送迎バスの最適化</h3>
+                             <p class="mt-4 text-gray-600">点在する酒蔵や観光施設の送迎バス情報を一元管理。利用者はSadoRideから最適な送迎ルートを検索・予約できるようになり、事業者はバスの稼働率を向上させることができます。</p>
+                        </div>
+                        <div class="md:order-1">
+                            <div id="shuttle-diagram-container" class="border p-4 rounded-lg bg-gray-50">
+                                <div class="flex justify-center mb-4">
+                                    <button id="shuttle-before-btn" class="px-4 py-2 text-sm font-medium text-white bg-sado-blue rounded-l-md">Before</button>
+                                    <button id="shuttle-after-btn" class="px-4 py-2 text-sm font-medium text-sado-blue bg-white border border-sado-blue rounded-r-md">After</button>
+                                </div>
+                                <div id="shuttle-diagram" class="h-48 relative flex justify-around items-center">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="slide" id="slide5">
-            <div class="slide-content">
-                <h2 class="slide-title">プロジェクト経験②</h2>
-                <div class="single-project-container">
-                    <div class="project-card">
-                        <h3>ファーストキャリア</h3>
-                        <div class="two-column" style="align-items: center;">
-                            <div class="column" style="width: 40%;">
-                                <p class="large-text"><strong>概要：</strong>大学内コミュニティで就活情報を共有できるサイト</p>
-                                <p class="large-text"><strong>使用技術：</strong>Next.js、TypeScript、Supabase</p>
-                                <p class="large-text"><strong>担当：</strong>認証やデータベースの設計</p>
-                                <p class="large-text"><strong>成果：</strong>少数チームの動き方について学習</p>
-                                <p class="large-text"><strong>期間：</strong>1週間</p>
-                            </div>
-                            <div class="column" style="width: 58%;">
-                                <div class="project-image" style="height: 320px; margin: 0;">
-                                    <img src="image copy.png" alt="ファーストキャリア画面" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" />
-                                
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <section id="market" class="py-16 sm:py-24 bg-warm-gray">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">広がる事業機会</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">SadoRideは、既存の移動手段が抱える課題を解決することで、新たな市場を創造します。明確なターゲット層と独自の強みで、佐渡の観光DXをリードします。</p>
                 </div>
-            </div>
-        </div>
 
-        <div class="slide" id="slide6">
-            <div class="slide-content">
-                <h2 class="slide-title">職業経験</h2>
-                <div class="experiences-container">
-                    <div class="experience-card" style="margin-bottom: 15px; padding: 15px; background-color: #e3f2fd; border-radius: 12px; box-shadow: 0 4px 12px rgba(33,150,243,0.1);">
-                        <h3 style="margin-top: 0; margin-bottom: 10px; font-size: 22px; color: #2196F3;">新潟人工知能研究所（アルバイト）</h3>
-                        <div class="two-column">
-                            <div class="column">
-                                <p style="margin: 5px 0; font-size: 16px;"><strong>期間：</strong>2024年6月～10月</p>
-                                <p style="margin: 5px 0; font-size: 16px;"><strong>業務内容：</strong></p>
-                                <ul style="margin: 5px 0; padding-left: 20px;">
-                                    <li style="margin-bottom: 5px; font-size: 16px;">開発補助</li>
-                                    <li style="margin-bottom: 5px; font-size: 16px;">Hugging Faceを使用した画像生成</li>
-                                </ul>
-                            </div>
-                            <div class="column">
-                                <p style="margin: 5px 0; font-size: 16px;"><strong>習得したスキル：</strong></p>
-                                <ul style="margin: 5px 0; padding-left: 20px;">
-                                    <li style="margin-bottom: 5px; font-size: 16px;">Hugging Face活用スキル</li>
-                                    <li style="margin-bottom: 5px; font-size: 16px;">Dify APIを用いたナレッジ登録アプリ作成</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="experience-card" style="padding: 15px; background-color: #e3f2fd; border-radius: 12px; box-shadow: 0 4px 12px rgba(33,150,243,0.1);">
-                        <h3 style="margin-top: 0; margin-bottom: 10px; font-size: 22px; color: #2196F3;">MicroWorld（インターン）</h3>
-                        <div class="two-column">
-                            <div class="column">
-                                <p style="margin: 5px 0; font-size: 16px;"><strong>期間：</strong>3ヶ月間</p>
-                                <p style="margin: 5px 0; font-size: 16px;"><strong>プロジェクト：</strong>医療用RAGシステムの設計構築</p>
-                            </div>
-                            <div class="column">
-                                <p style="margin: 5px 0; font-size: 16px;"><strong>使用技術：</strong>Python、Streamlit、AWS(EC2、DynamoDB)、Dify API</p>
-                                <p style="margin: 5px 0; font-size: 16px;"><strong>成果：</strong>AWSの基本的操作を多く学習</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" id="slide7">
-            <div class="slide-content">
-                <h2 class="slide-title">興味のある分野と将来ビジョン</h2>
-                <div class="vision-content">
+                <div class="mt-12 grid lg:grid-cols-2 gap-12 items-start">
                     <div>
-                        <h3 style="color: #2196F3; margin-top: 20px; font-size: 24px;">インフラ・サーバー分野への興味</h3>
-                        <ul class="bullet-points">
-                            <li>クラウドを活用した効率的なシステム設計</li>
-                            <li>利用者が増えても対応できる拡張性の高いシステム開発</li>
-                            <li>安定して動き続けるシステムの構築</li>
-                            <li>マルチクラウドで活躍できる技術知識</li>
-                        </ul>
+                        <h3 class="text-2xl font-semibold text-center text-gray-900 mb-6">競合優位性</h3>
+                        <div class="overflow-x-auto">
+                            <table id="competition-table" class="w-full min-w-max text-left bg-white shadow-lg rounded-lg">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="p-4 font-semibold">項目</th>
+                                        <th class="p-4 font-semibold">既存交通</th>
+                                        <th class="p-4 font-semibold">自家用車</th>
+                                        <th class="p-4 font-semibold text-white bg-sado-blue">SadoRide</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-t hover:bg-blue-50 transition-colors">
+                                        <td class="p-4 font-medium">予約</td>
+                                        <td class="p-4">電話/対面</td>
+                                        <td class="p-4">不要</td>
+                                        <td class="p-4 font-bold text-accent-sado-blue">アプリで完結</td>
+                                    </tr>
+                                    <tr class="border-t hover:bg-blue-50 transition-colors">
+                                        <td class="p-4 font-medium">リアルタイム追跡</td>
+                                        <td class="p-4">不可</td>
+                                        <td class="p-4">自己管理</td>
+                                        <td class="p-4 font-bold text-accent-sado-blue">可能</td>
+                                    </tr>
+                                    <tr class="border-t hover:bg-blue-50 transition-colors">
+                                        <td class="p-4 font-medium">飲酒時の移動</td>
+                                        <td class="p-4">限定的</td>
+                                        <td class="p-4">不可</td>
+                                        <td class="p-4 font-bold text-accent-sado-blue">多様な選択肢</td>
+                                    </tr>
+                                    <tr class="border-t hover:bg-blue-50 transition-colors">
+                                        <td class="p-4 font-medium">送迎バス最適化</td>
+                                        <td class="p-4">不可</td>
+                                        <td class="p-4">不可</td>
+                                        <td class="p-4 font-bold text-accent-sado-blue">一元管理</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                     <div>
+                        <h3 class="text-2xl font-semibold text-center text-gray-900 mb-6">主なターゲット市場</h3>
+                        <div class="chart-container bg-white p-4 rounded-lg shadow-lg">
+                            <canvas id="targetMarketChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </section>
+        
+        <section id="business" class="py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">持続可能な成長戦略</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">SadoRideは多様な収益源を確保し、事業の安定性と成長性を両立させます。地域との連携を深め、佐渡の観光エコシステム全体に貢献します。</p>
+                </div>
+                <div class="mt-12">
+                    <h3 class="text-2xl font-semibold text-center text-gray-900 mb-6">ビジネスモデル</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <div class="text-4xl mb-3">🎟️</div>
+                            <h4 class="text-lg font-semibold">予約・提携手数料</h4>
+                            <p class="mt-2 text-sm text-gray-600">タクシー・バスの予約手数料や、観光施設との送迎バス提携料が主な収益源です。</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <div class="text-4xl mb-3">📣</div>
+                            <h4 class="text-lg font-semibold">広告・プロモーション</h4>
+                            <p class="mt-2 text-sm text-gray-600">アプリ内で地域の店舗や施設の広告を掲載し、送客を支援します。</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <div class="text-4xl mb-3">📊</div>
+                            <h4 class="text-lg font-semibold">データ分析サービス</h4>
+                            <p class="mt-2 text-sm text-gray-600">蓄積した移動データを分析し、佐渡市の観光戦略や交通計画立案に貢献します。</p>
+                        </div>
+                         <div class="bg-gray-50 p-6 rounded-lg">
+                            <div class="text-4xl mb-3">⭐</div>
+                            <h4 class="text-lg font-semibold">プレミアム機能</h4>
+                            <p class="mt-2 text-sm text-gray-600">事前予約優先権や特別コースなど、付加価値の高い機能を有料で提供します。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-16 sm:py-24 bg-warm-gray">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-sado-blue sm:text-4xl">未来へのロードマップ</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">段階的な開発と機能拡張により、着実に事業を成長させ、佐渡の交通インフラとしての地位を確立します。</p>
+                </div>
+                <div class="mt-12 max-w-4xl mx-auto">
+                    <div id="funding-section" class="mb-12">
+                         <h3 class="text-2xl font-semibold text-center text-gray-900 mb-6">資金計画</h3>
+                         <p class="text-center text-gray-600 mb-2">初期開発と市場投入のため、<strong class="text-accent-sado-blue text-xl">X,XXX万円</strong>の資金調達を目指します。</p>
+                         <div class="chart-container bg-white p-4 rounded-lg shadow-lg" style="height: 300px;">
+                             <canvas id="fundingChart"></canvas>
+                         </div>
                     </div>
                     
-                    <div>
-                        <h3 style="color: #2196F3; margin-top: 30px; font-size: 24px;">目指すエンジニア像</h3>
-                        <ul class="bullet-points">
-                            <li>貢献性の高いエンジニアになりたい</li>
-                            <li>技術力とコミュニケーションを向上させる</li>
-                            <li>技術者として信頼される存在を目指す</li>
-                            <li>常に成長し続けるエンジニア</li>
-                        </ul>
+                    <div class="relative mt-12">
+                        <div id="roadmap-timeline" class="space-y-8">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="slide thank-you" id="slide8">
-            <div class="slide-content">
-                <h1>ご清聴ありがとうございました</h1>
-                <p>木原 優月(きはら ゆづき)</p>
-                <p>開志専門職大学 情報学部 情報学科</p>
-                <div class="contact-section">
-                    <p style="margin-top: 30px; font-size: 18px;">GithubURL：https://github.com/FrohleinYoshie</p>
-                    <p style="margin-top: 30px; font-size: 18px;">QiitaURL：https://qiita.com/FrohleinYoshie</p>
-                </div>
-            </div>
-        </div>
+    </main>
 
-        <div class="nav-buttons">
-            <button class="nav-button" id="prevSlide">↑</button>
-            <button class="nav-button" id="nextSlide">↓</button>
+    <footer class="bg-sado-blue text-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+            <p class="font-bold text-xl">SadoRide</p>
+            <p class="mt-2 text-sm text-blue-200">佐渡島の未来の移動を、共に創造する。</p>
+            <p class="mt-4 text-xs text-blue-300">&copy; 2025 SadoRide Project. All Rights Reserved.</p>
         </div>
-        
-        <div class="slide-indicator">
-            <span id="currentSlide">1</span> / <span id="totalSlides">10</span>
-        </div>
-    </div>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const slides = document.querySelectorAll('.slide');
-            const totalSlides = 8;
-            document.getElementById('totalSlides').textContent = totalSlides;
+        document.addEventListener('DOMContentLoaded', function () {
             
-            let currentSlide = 0;
-            updateSlideIndicator();
-            
-            document.getElementById('nextSlide').addEventListener('click', function() {
-                if (currentSlide < totalSlides - 1) {
-                    currentSlide++;
-                    slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
-                    updateSlideIndicator();
-                }
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            const headerHeight = document.getElementById('header').offsetHeight;
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-nav');
+                            link.classList.add('inactive-nav');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active-nav');
+                                link.classList.remove('inactive-nav');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: `-${headerHeight}px 0px 0px 0px` });
+
+            sections.forEach(section => {
+                observer.observe(section);
             });
             
-            document.getElementById('prevSlide').addEventListener('click', function() {
-                if (currentSlide > 0) {
-                    currentSlide--;
-                    slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
-                    updateSlideIndicator();
-                }
-            });
-            
-            window.addEventListener('scroll', function() {
-        
-                const scrollPosition = window.scrollY;
-                const windowHeight = window.innerHeight;
-                
-                slides.forEach((slide, index) => {
-                    const slideTop = slide.offsetTop;
-                    const slideBottom = slideTop + slide.offsetHeight;
-                    
-                    if (scrollPosition >= slideTop - windowHeight/2 && 
-                        scrollPosition < slideBottom - windowHeight/2) {
-                        currentSlide = index;
-                        updateSlideIndicator();
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                        mobileMenu.classList.add('hidden');
                     }
                 });
             });
+
+            const busIcon = document.getElementById('bus-icon');
+            setInterval(() => {
+                busIcon.style.left = busIcon.style.left === '15%' ? '75%' : '15%';
+            }, 3000);
+
+            const shuttleDiagramContainer = document.getElementById('shuttle-diagram');
+            const beforeBtn = document.getElementById('shuttle-before-btn');
+            const afterBtn = document.getElementById('shuttle-after-btn');
+            const shuttleData = {
+                before: [
+                    { from: '酒蔵A', to: '港' },
+                    { from: '酒蔵B', to: 'ホテルX' },
+                    { from: '施設C', to: '港' },
+                ],
+                after: [
+                    { from: 'SadoRide', to: '酒蔵A' },
+                    { from: 'SadoRide', to: '酒蔵B' },
+                    { from: 'SadoRide', to: '施設C' },
+                    { from: 'SadoRide', to: '港' },
+                    { from: 'SadoRide', to: 'ホテルX' },
+                ]
+            };
             
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-                    e.preventDefault();
-                    document.getElementById('nextSlide').click();
-                } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-                    e.preventDefault();
-                    document.getElementById('prevSlide').click();
+            function createShuttleDiagram(state) {
+                shuttleDiagramContainer.innerHTML = '';
+                const isAfter = state === 'after';
+                const centerNode = document.createElement('div');
+                centerNode.className = `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 rounded-full ${isAfter ? 'bg-sado-blue text-white' : 'hidden'}`;
+                centerNode.innerHTML = '<span>SadoRide</span>';
+                shuttleDiagramContainer.appendChild(centerNode);
+
+                const points = isAfter ? ['酒蔵A', '酒蔵B', '施設C', '港', 'ホテルX'] : ['酒蔵A', '酒蔵B', '施設C', '港', 'ホテルX'];
+                points.forEach((p, i) => {
+                    const angle = (i / points.length) * 2 * Math.PI;
+                    const x = 50 + 40 * Math.cos(angle);
+                    const y = 50 + 40 * Math.sin(angle);
+                    
+                    const pointNode = document.createElement('div');
+                    pointNode.className = 'absolute p-1 text-xs bg-white border rounded-full text-center';
+                    pointNode.style.left = `${x}%`;
+                    pointNode.style.top = `${y}%`;
+                    pointNode.style.transform = 'translate(-50%, -50%)';
+                    pointNode.textContent = p;
+                    shuttleDiagramContainer.appendChild(pointNode);
+                    
+                    if (isAfter) {
+                        const line = document.createElement('div');
+                        line.className = 'absolute bg-blue-200';
+                        line.style.left = '50%';
+                        line.style.top = '50%';
+                        line.style.width = '40%';
+                        line.style.height = '2px';
+                        line.style.transformOrigin = '0 0';
+                        line.style.transform = `rotate(${angle * 180 / Math.PI}deg)`;
+                        shuttleDiagramContainer.insertBefore(line, centerNode);
+                    }
+                });
+
+                if(!isAfter) {
+                    const connections = [[0,3], [1,4], [2,3]];
+                    connections.forEach(conn => {
+                        const p1 = shuttleDiagramContainer.children[conn[0]+1];
+                        const p2 = shuttleDiagramContainer.children[conn[1]+1];
+                        const line = document.createElement('div');
+                        const p1x = parseFloat(p1.style.left);
+                        const p1y = parseFloat(p1.style.top);
+                        const p2x = parseFloat(p2.style.left);
+                        const p2y = parseFloat(p2.style.top);
+                        const angle = Math.atan2(p2y - p1y, p2x - p1x) * 180 / Math.PI;
+                        const length = Math.sqrt(Math.pow(p2x-p1x, 2) + Math.pow(p2y-p1y, 2));
+
+                        line.className = 'absolute bg-gray-300';
+                        line.style.left = `${p1x}%`;
+                        line.style.top = `${p1y}%`;
+                        line.style.width = `${length}%`;
+                        line.style.height = '2px';
+                        line.style.transformOrigin = '0 0';
+                        line.style.transform = `rotate(${angle}deg)`;
+                        shuttleDiagramContainer.insertBefore(line, shuttleDiagramContainer.firstChild);
+                    });
+                }
+            }
+
+            beforeBtn.addEventListener('click', () => {
+                createShuttleDiagram('before');
+                beforeBtn.classList.add('bg-sado-blue', 'text-white');
+                beforeBtn.classList.remove('bg-white', 'text-sado-blue', 'border', 'border-sado-blue');
+                afterBtn.classList.add('bg-white', 'text-sado-blue', 'border', 'border-sado-blue');
+                afterBtn.classList.remove('bg-sado-blue', 'text-white');
+            });
+            afterBtn.addEventListener('click', () => {
+                createShuttleDiagram('after');
+                afterBtn.classList.add('bg-sado-blue', 'text-white');
+                afterBtn.classList.remove('bg-white', 'text-sado-blue', 'border', 'border-sado-blue');
+                beforeBtn.classList.add('bg-white', 'text-sado-blue', 'border', 'border-sado-blue');
+                beforeBtn.classList.remove('bg-sado-blue', 'text-white');
+            });
+
+            createShuttleDiagram('before');
+
+
+            const targetMarketCtx = document.getElementById('targetMarketChart').getContext('2d');
+            new Chart(targetMarketCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['飲酒を楽しみたい観光客', '免許なし/運転不安層', '効率重視の観光客', '環境配慮型の旅行者'],
+                    datasets: [{
+                        label: 'ターゲット市場',
+                        data: [40, 30, 20, 10],
+                        backgroundColor: ['#2563EB', '#3B82F6', '#60A5FA', '#93C5FD'],
+                        borderColor: '#F5F5F4',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            const fundingCtx = document.getElementById('fundingChart').getContext('2d');
+            new Chart(fundingCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['アプリ開発費', 'マーケティング費', '運用・保守費', '人員拡充・その他'],
+                    datasets: [{
+                        label: '資金使途 (%)',
+                        data: [45, 25, 15, 15],
+                        backgroundColor: '#3B82F6',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 50,
+                             ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
                 }
             });
             
-            function updateSlideIndicator() {
-                document.getElementById('currentSlide').textContent = currentSlide + 1;
-            }
+            const roadmapData = [
+                {
+                    phase: 'フェーズ1',
+                    title: '初期開発・MVPリリース (2026年春)',
+                    details: 'タクシー予約機能、主要バス路線のGPS追跡機能を実装。主要な交通事業者との連携を開始。',
+                    icon: '🚀'
+                },
+                {
+                    phase: 'フェーズ2',
+                    title: '機能拡張・本格運用 (2026年秋)',
+                    details: '全バス路線の追跡、送迎バス一元管理機能の実装。多言語対応も開始し、インバウンド需要に対応。',
+                    icon: '📈'
+                },
+                {
+                    phase: 'フェーズ3',
+                    title: 'サービス拡大・地域貢献 (2027年以降)',
+                    details: 'AIによる最適ルート提案、地域イベントとの連携強化。蓄積データを活用し、佐渡の観光DXを牽引。',
+                    icon: '🌍'
+                }
+            ];
+
+            const timelineContainer = document.getElementById('roadmap-timeline');
+            roadmapData.forEach((item, index) => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'timeline-item relative pl-12 pb-8';
+                
+                itemEl.innerHTML = `
+                    <div class="timeline-dot bg-blue-200 text-sado-blue rounded-full flex items-center justify-center font-bold ring-8 ring-warm-gray">${item.icon}</div>
+                    <div class="bg-white p-4 rounded-lg shadow-md cursor-pointer roadmap-item">
+                        <h4 class="font-bold text-lg text-sado-blue">${item.phase}: ${item.title}</h4>
+                        <p class="roadmap-details hidden mt-2 text-gray-600">${item.details}</p>
+                    </div>
+                `;
+                timelineContainer.appendChild(itemEl);
+            });
+            
+            document.querySelectorAll('.roadmap-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    item.querySelector('.roadmap-details').classList.toggle('hidden');
+                });
+            });
         });
     </script>
 </body>
