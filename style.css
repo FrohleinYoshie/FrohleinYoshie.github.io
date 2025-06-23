@@ -1,0 +1,17 @@
+body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+.bg-warm-gray { background-color: #F5F5F4; }
+.bg-sado-blue { background-color: #1E3A8A; }
+.text-sado-blue { color: #1E3A8A; }
+.border-sado-blue { border-color: #1E3A8A; }
+.accent-sado-blue { background-color: #3B82F6; }
+.text-accent-sado-blue { color: #3B82F6; }
+.chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+@media (max-width: 768px) { .chart-container { height: 300px; } }
+.timeline-item::before { content: ''; position: absolute; left: 11px; top: 12px; bottom: 0; width: 2px; background: #DBEAFE; }
+.timeline-item:last-child::before { display: none; }
+.timeline-dot { position: absolute; left: 0; top: 12px; width: 24px; height: 24px; }
+.active-nav { color: #3B82F6; font-weight: 700; }
+.inactive-nav { color: #4B5563; }
+.bus-line { position: absolute; left: 10%; width: 80%; height: 4px; background-color: #E5E7EB; border-radius: 2px; top: 50%; transform: translateY(-50%); }
+.bus-stop { position: absolute; width: 12px; height: 12px; background-color: #9CA3AF; border-radius: 50%; top: 50%; transform: translate(-50%, -50%); }
+.bus-icon { position: absolute; top: 50%; transform: translateY(-50%); font-size: 1.5rem; transition: left 1.5s ease-in-out; }
